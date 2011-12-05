@@ -14,16 +14,16 @@ SECRET_KEY = """k~b-bJv~5/jr}m+i,VcB]@#|thbyIlZOSVAo+@,J>0\FtX@1e);""" \
              + """3aT]$l2x.0JbIlX+S@-947.shy*lOJSt]+"SP5i{\mFLA$>Q`.v""" \
              + """4l!#TNOhIr`#MxO]&HMG0`|_\Q"""
 
-def genPass(paramDict):
+def genPass(args, paramDict):
 
     temp_key = SECRET_KEY
     gen_pass = ''
 
-    if (not paramDict.sitename) or \
-        (len(paramDict.sitename) > len(SECRET_KEY)):
+    if (not args) or \
+        (len(args[0]) > len(SECRET_KEY)):
         return
 
-    sitename = str(paramDict.sitename)
+    sitename = str(args[0])
     maxchars = int(paramDict.maxchars)
 
     if not paramDict.alphas:
@@ -50,8 +50,6 @@ def genPass(paramDict):
 if __name__ == '__main__':
     parser = OptionParser()
     parser.set_defaults(maxchars=15, alphas=True, digits=True, symbols=True)
-    parser.add_option('-u', '--sitename', dest='sitename', action="store",\
-            help="Set the sitename.")
     parser.add_option('-m', '--maxchars', dest='maxchars', action="store",\
             help='Set the max number of characters to use.  Default is 15.')
     parser.add_option('-a', '--alphas', dest='alphas', action="store_false",\
@@ -60,5 +58,5 @@ if __name__ == '__main__':
             help='Do not use digits [0-9] in password.')
     parser.add_option('-s', '--symbols', dest='symbols', action="store_false",\
             help='Do not use symbols in password.')
-    (options, _) = parser.parse_args()
-    genPass(options)
+    (options, args) = parser.parse_args()
+    genPass(args, options)
