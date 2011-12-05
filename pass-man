@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+import re
+import os
+from optparse import OptionParser
+
+
+###############################################################################
+# Fill the next line with a long list of random characters.  I recommend      #
+# going to 'http://www.thebitmill.com/tools/password.html' to build it.  The  #
+# longer and more complex, the better.                                        #
+#                            !!!!CHANGE THIS!!!!                              #
+###############################################################################
+SECRET_KEY = """k~b-bJv~5/jr}m+i,VcB]@#|thbyIlZOSVAo+@,J>0\FtX@1e);""" \
+             + """3aT]$l2x.0JbIlX+S@-947.shy*lOJSt]+"SP5i{\mFLA$>Q`.v""" \
+             + """4l!#TNOhIr`#MxO]&HMG0`|_\Q"""
+
+def genPass(paramDict):
+
+    temp_key = SECRET_KEY
+    gen_pass = ''
+
+    if (not paramDict.sitename) or \
+        (len(paramDict.sitename) > len(SECRET_KEY)):
+        return
+
+    sitename = str(paramDict.sitename)
+    maxchars = int(paramDict.maxchars)
+
+    if not paramDict.alphas:
+        temp_key = re.sub(r"""[A-Za-z]""", '', temp_key)
+
+    if not paramDict.digits:
+        temp_key = re.sub(r"""[0-9]""", '', temp_key)
+
+    if not paramDict.symbols:
+        temp_key = re.sub(r"""[^A-Za-z0-9]""", '', temp_key)
+
+    ord_offset = sum([ord(iter_val) for iter_val in sitename])
+    for iter_idx in range(maxchars):
+        str_idx = (iter_idx*ord_offset)%len(SECRET_KEY) if iter_idx else 0
+        gen_pass += SECRET_KEY[str_idx]
+
+    print 'Generated Password for <%s>:\n\t%s'%(sitename, gen_pass, )
+
+    # - !MacOSX ONLY! -
+    os.system("""echo '%s' | pbcopy"""%(gen_pass,))
+
+if __name__ == '__main__':
+    parser = OptionParser()
+    parser.set_defaults(maxchars=15, alphas=True, digits=True, symbols=True)
+    parser.add_option('-u', '--sitename', dest='sitename', action="store",\
+            help="Set the sitename.")
+    parser.add_option('-m', '--maxchars', dest='maxchars', action="store",\
+            help='Set the max number of characters to use.  Default is 15.')
+    parser.add_option('-a', '--alphas', dest='alphas', action="store_false",\
+            help='Do not use alphas [A-Za-z] in password.')
+    parser.add_option('-d', '--digits', dest='digits', action="store_false",\
+            help='Do not use digits [0-9] in password.')
+    parser.add_option('-s', '--symbols', dest='symbols', action="store_false",\
+            help='Do not use symbols in password.')
+    (options, _) = parser.parse_args()
+    genPass(options)
