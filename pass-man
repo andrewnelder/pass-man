@@ -35,9 +35,11 @@ def genPass(paramDict):
     if not paramDict.symbols:
         temp_key = re.sub(r"""[^A-Za-z0-9]""", '', temp_key)
 
-    ord_offset = sum([ord(iter_val) for iter_val in sitename])
-    for iter_idx in range(maxchars):
-        str_idx = (iter_idx*ord_offset)%len(SECRET_KEY) if iter_idx else 0
+    temp_sitename = sitename*((maxchars/len(sitename))+1)
+
+    for iter_idx in range(1, maxchars+1):
+        str_idx = iter_idx*ord(temp_sitename[iter_idx])%len(SECRET_KEY)
+        print str_idx, temp_sitename[iter_idx], ord(temp_sitename[iter_idx]), len(SECRET_KEY)
         gen_pass += SECRET_KEY[str_idx]
 
     print 'Generated Password for <%s>:\n\t%s'%(sitename, gen_pass, )
