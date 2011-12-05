@@ -10,15 +10,15 @@ remember your password.  Just don't change your key once you've set it.
 
 ##Installation
 Make the script executable:
-<code>
+```
 chmod a+x pass-man
-</code>
+```
 
 Then either put the script in your path or append your path with the
 project directory.
 
 ##Usage
-<code>
+```
 Usage: pass-man [-a/d/s] [-m MAXCHARS] -u SITENAME
 
 Options:
@@ -31,13 +31,13 @@ Options:
   -a, --alphas          Do not use alphas [A-Za-z] in password.
   -d, --digits          Do not use digits [0-9] in password.
   -s, --symbols         Do not use symbols in password.
-</code>
+```
 
 ###Example
-<code>
+```
 $> pass-man -u yelp.com
 kJl]ISTVlAvX+`A
-</code>
+```
 
 ##Wish List
 - A web interface that can do this conversion remotely.  It can be
