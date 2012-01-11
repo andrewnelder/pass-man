@@ -5,8 +5,9 @@ The beauty of a system like this is you don't have to work too hard to
 remember your password.  Just don't change your key once you've set it.
 
 ##Requirements
-- Python 2.6/2.7
-- MacOSX 10.6+ / Linux
+- [Python 2.6/2.7](http://www.python.org/)
+- [XSel 1.2.0+](http://www.kfish.org/software/xsel/download/) (Linux)
+- MacOSX / Linux
 
 ##Installation
 Make the script executable:
