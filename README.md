@@ -19,7 +19,7 @@ project directory.
 
 ##Usage
 ```
-Usage: pass-man [-a/d/s] [-m MAXCHARS] -u SITENAME
+Usage: pass-man [-a/d/s] [-m MAXCHARS] SITENAME
 
 Options:
   -h, --help            show this help message and exit
