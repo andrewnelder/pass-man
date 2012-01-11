@@ -6,7 +6,7 @@ remember your password.  Just don't change your key once you've set it.
 
 ##Requirements
 - Python 2.6/2.7
-- MacOSX 10.6+
+- MacOSX 10.6+ / Linux
 
 ##Installation
 Make the script executable:
@@ -35,8 +35,18 @@ Options:
 
 ###Example
 ```
-$> pass-man -u yelp.com
-kJl]ISTVlAvX+`A
+$> pass-man yelp.com
+kJl]142VlAvX+`A
+```
+
+```
+$> pass-man -sa yelp.com
+142190891023112
+```
+
+```
+$> pass-man -d yelp.com
+kJl]VlAvX+`A)!@
 ```
 
 ##Wish List
