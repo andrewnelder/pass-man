@@ -22,12 +22,11 @@ project directory.
 Usage: pass-man [-a/d/s] [-m MAXCHARS] SITENAME
 
 Options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit.
   -u SITENAME, --sitename=SITENAME
                         Set the sitename.
   -m MAXCHARS, --maxchars=MAXCHARS
-                        Set the max number of characters to use.  Default is
-                        15.
+                        Set the max number of characters to use.  Default is 15.
   -a, --alphas          Do not use alphas [A-Za-z] in password.
   -d, --digits          Do not use digits [0-9] in password.
   -s, --symbols         Do not use symbols in password.
