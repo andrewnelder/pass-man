@@ -1,8 +1,15 @@
 #!/usr/bin/env python
+
+# I M P O R T S ###############################################################
+
 import re
 import os
+
+from platform import system
 from optparse import OptionParser
 
+
+# C O N S T A N T S ###########################################################
 
 ###############################################################################
 # Fill the next line with a long list of random characters.  I recommend      #
@@ -10,42 +17,84 @@ from optparse import OptionParser
 # longer and more complex, the better.                                        #
 #                            !!!!CHANGE THIS!!!!                              #
 ###############################################################################
-SECRET_KEY = """k~b-bJv~5/jr}m+i,VcB]@#|thbyIlZOSVAo+@,J>0\FtX@1e);""" \
-             + """3aT]$l2x.0JbIlX+S@-947.shy*lOJSt]+"SP5i{\mFLA$>Q`.v""" \
-             + """4l!#TNOhIr`#MxO]&HMG0`|_\Q"""
+SECRET_KEY = """&h:RC$,6y-Zh%?"2't0&]3VA<vmYF~`]pmmHsB~yl<Yw|nM6,pE:Nl~=`wD"""\
+    + """uByzC[!f_6-1(_Yfym)9uG?]j=Y)4\TBt6_n{gzaBN.R"haqX>Joh7tX!/RG+HZj0["""\
+    + """Jkp123i4o*()!&!%!pcvpxvcm,fmdklr4!@%$#!1iop,c.vm,.wrj51up0i0!%!@$@"""
 
-def genPass(args, paramDict):
+
+# C L A S S E S ###############################################################
+
+class PLATFORM(object):
+    '''
+    Helper functions to quickly determine the platform.
+    '''
+
+    @classmethod
+    def is_mac(cls):
+        '''MacOSX'''
+        return system() == 'Darwin'
+
+    @classmethod
+    def is_linux(cls):
+        '''Linux'''
+        return system() == 'Linux'
+
+    @classmethod
+    def is_windows(cls):
+        '''Windows'''
+        return system() == 'Windows'
+
+
+# F U N C T I O N S ###########################################################
+
+def gen_pass(sitename, params):
+    '''
+    Generates a password based on the sitename and the SECRET_KEY constant
+    described above.  The SECRET_KEY is modified based on the parameters
+    alphas, digits, and symbols inside of the params input variable.
+
+    @param sitename: the name of the website (ie. facebook, youtube, etc.)
+    @type sitename: string
+
+    @param params: the character types allowed in the new password
+    @type params: parameter dictionary
+
+    @return: the generated password
+    @rtype: string
+    '''
 
     temp_key = SECRET_KEY
     gen_pass = ''
 
     if (not args) or \
-        (len(args[0]) > len(SECRET_KEY)):
+        (len(args[0]) > len(SECRET_KEY)) or \
+        (not params.alphas and not params.digits and not params.symbols):
         return
 
-    sitename = str(args[0])
-    maxchars = int(paramDict.maxchars)
+    maxchars = int(params.maxchars)
 
-    if not paramDict.alphas:
+    if not params.alphas:
         temp_key = re.sub(r"""[A-Za-z]""", '', temp_key)
 
-    if not paramDict.digits:
+    if not params.digits:
         temp_key = re.sub(r"""[0-9]""", '', temp_key)
 
-    if not paramDict.symbols:
+    if not params.symbols:
         temp_key = re.sub(r"""[^A-Za-z0-9]""", '', temp_key)
 
     temp_sitename = sitename*((maxchars/len(sitename))+1)
 
     for iter_idx in range(1, maxchars+1):
-        str_idx = iter_idx*ord(temp_sitename[iter_idx])%len(SECRET_KEY)
-        print str_idx, temp_sitename[iter_idx], ord(temp_sitename[iter_idx]), len(SECRET_KEY)
-        gen_pass += SECRET_KEY[str_idx]
+        str_idx = iter_idx*ord(temp_sitename[iter_idx])%len(temp_key)
+        gen_pass += temp_key[str_idx]
 
-    print 'Generated Password for <%s>:\n\t%s'%(sitename, gen_pass, )
+    print 'Generated Password for <%s>:\n\t<< %s >>'%(sitename, gen_pass, )
 
-    # - !MacOSX ONLY! -
-    os.system("""echo '%s' | pbcopy"""%(gen_pass,))
+    if PLATFORM.is_mac():
+        os.system("""echo '''%s''' | pbcopy"""%(gen_pass,))
+
+    if PLATFORM.is_linux():
+        os.popen('xsel', 'wb').write(gen_pass)
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -58,5 +107,8 @@ if __name__ == '__main__':
             help='Do not use digits [0-9] in password.')
     parser.add_option('-s', '--symbols', dest='symbols', action="store_false",\
             help='Do not use symbols in password.')
-    (options, args) = parser.parse_args()
-    genPass(args, options)
+    (params, args) = parser.parse_args()
+    gen_pass(args[0], params)
+
+# E N D   O F   F I L E #######################################################
+
